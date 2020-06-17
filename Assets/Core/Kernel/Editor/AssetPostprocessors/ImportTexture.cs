@@ -29,30 +29,40 @@ public class ImportTexture : AssetPostprocessor
                 m_nReset--;
 
                 TextureImporterFormat fmtAlpha, fmtNotAlpha, curFmt;
-                TextureImporterPlatformSettings settings = importer.GetPlatformTextureSettings("iPhone");
+                TextureImporterPlatformSettings settings;
+                settings = importer.GetPlatformTextureSettings("iPhone");
+#if UNITY_2019
+                curFmt = TextureImporterFormat.ASTC_6x6;
+#else
                 //2的整数次幂
                 // bool isPowerOfTwo = (width == height) && (width > 0) && ((width & (width - 1)) == 0);
                 bool isPowerOfTwo = IsPowerTwo(width) && IsPowerTwo(height);
                 fmtAlpha = isPowerOfTwo ? TextureImporterFormat.PVRTC_RGBA4 : TextureImporterFormat.ASTC_RGBA_4x4;
                 fmtNotAlpha = isPowerOfTwo ? TextureImporterFormat.PVRTC_RGB4 : TextureImporterFormat.ASTC_RGB_6x6;
                 curFmt = importer.DoesSourceTextureHaveAlpha() ? fmtAlpha : fmtNotAlpha;
+#endif
                 settings.overridden = true;
                 settings.maxTextureSize = 1024;
                 settings.format = curFmt;
                 importer.SetPlatformTextureSettings(settings);
 
                 settings = importer.GetPlatformTextureSettings("Android");
+#if UNITY_2019
+                curFmt = TextureImporterFormat.ETC2_RGBA8;
+                settings.androidETC2FallbackOverride = AndroidETC2FallbackOverride.Quality32Bit;
+#else
                 //被4整除
                 bool divisible4 = (width % 4 == 0 && height % 4 == 0);
                 fmtAlpha = divisible4 ? TextureImporterFormat.ETC2_RGBA8Crunched : TextureImporterFormat.ASTC_RGBA_4x4;
                 fmtNotAlpha = divisible4 ? TextureImporterFormat.ETC_RGB4Crunched : TextureImporterFormat.ASTC_RGB_6x6;
                 curFmt = importer.DoesSourceTextureHaveAlpha() ? fmtAlpha : fmtNotAlpha;
+#endif
                 settings.overridden = true;
                 settings.allowsAlphaSplitting = false;
                 settings.maxTextureSize = 1024;
                 settings.format = curFmt;
                 importer.SetPlatformTextureSettings(settings);
-
+                
                 importer.sRGBTexture = true;
                 importer.mipmapEnabled = false;
                 importer.alphaIsTransparency = false;
