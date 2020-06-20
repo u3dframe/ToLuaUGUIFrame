@@ -48,4 +48,18 @@ public class GameLuaClient : LuaClient
 #endif
 		luaState.AddSearchPath(rootPath + "/Lua");
 	}
+
+	/**
+	public object[] CallFunction(string funcName, params object[] args) {
+		LuaFunction func = luaState.GetFunction(funcName);
+		if (func != null) {
+			return func.LazyCall(args);
+		}
+		return null;
+	}
+
+	public static object[] CallMethod(string module, string func, params object[] args) {
+		return CallFunction(module + "." + func, args);
+	}
+	*/
 }
