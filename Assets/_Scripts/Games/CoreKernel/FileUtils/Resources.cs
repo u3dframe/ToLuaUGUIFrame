@@ -32,6 +32,7 @@ namespace Core.Kernel
             return fp;
         }
 
+#if UNITY_EDITOR
         static public string Path2AssetsStart(string fp)
         {
             fp = ReplaceSeparator(fp);
@@ -42,7 +43,6 @@ namespace Core.Kernel
             return fp;
         }
 		
-#if UNITY_EDITOR
 		// AssetDatabase 取得的 Path 都是 AssetPath [以 Assets/ 开头路径]
         static public string GetPath(UObject obj)
         {

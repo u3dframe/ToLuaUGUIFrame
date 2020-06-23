@@ -4,7 +4,29 @@ using System.Collections;
 using System.Collections.Generic;
 using TNet;
 
-public class NetworkManager : Core.Kernel.BasicManager<NetworkManager> {
+public class NetworkManager : MonoBehaviour {
+	static NetworkManager _instance;
+	static public NetworkManager instance{
+		get{
+			if (_instance == null) {
+				string NM_Gobj = "GameManager";
+				GameObject _gobj = GameObject.Find(NM_Gobj);
+				if (!_gobj)
+				{
+					_gobj = new GameObject(NM_Gobj, typeof(NetworkManager));
+				}
+				_instance = _gobj.GetComponent<NetworkManager>();
+				if (_instance == null)
+				{
+					_instance = _gobj.AddComponent<NetworkManager> ();
+				}
+				GameObject.DontDestroyOnLoad (_gobj);
+			}
+
+			return _instance;
+		}
+	}
+	
 	static readonly object m_lockObject = new object();
 	static Queue<KeyValuePair<int, ByteBuffer>> mEvents = new Queue<KeyValuePair<int, ByteBuffer>>();
 	
@@ -13,6 +35,14 @@ public class NetworkManager : Core.Kernel.BasicManager<NetworkManager> {
 	String m_host = null;
 	int m_port = 0;
 	
+	/// <summary>
+	///  初始化
+	/// </summary>
+	void Awake(){
+		socket = new SocketClient();
+		socket.OnRegister();
+	}
+
 	/// <summary>
 	///  更新 - 接受到数据
 	/// </summary>
@@ -45,11 +75,6 @@ public class NetworkManager : Core.Kernel.BasicManager<NetworkManager> {
 		bool isState = LuaHelper.CFuncLua(lua_func,cmd,data);
 		if(!isState)
 			Debug.LogErrorFormat("=== OnCF2Lua Fails,lua func = [{0}], code = [{1}]",lua_func,cmd);
-	}
-
-	protected override void OnInitInstance(){
-		socket = new SocketClient();
-		socket.OnRegister();
 	}
 
 	public NetworkManager InitNet(string host,int port,string luaFunc){
