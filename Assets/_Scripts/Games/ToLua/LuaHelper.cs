@@ -114,6 +114,15 @@ public static class LuaHelper {
 	}
 
 	/// <summary>
+	/// 最多9个参数
+	/// </summary>
+	public static bool CFuncLua(string funcName, params object[] args) {
+		GameLuaClient mgr = (GameLuaClient)GameLuaClient.Instance;
+		if (mgr != null) { return mgr.CFuncLua(funcName,args); } 
+		return false;
+	}
+
+	/// <summary>
 	/// 网络可用
 	/// </summary>
 	public static bool NetAvailable {

@@ -65,5 +65,21 @@ namespace Core.Kernel
         {
             return InitInstance(null);
         }
+
+        protected bool _isAppQuit = false;
+
+        void OnApplicationQuit(){
+            this._isAppQuit = true;
+        }
+
+        void OnDestroy(){
+            if (this._isAppQuit) {
+                return;
+            }
+            _shareT = null;
+            CFOnDestroy();
+        }
+
+        protected virtual void CFOnDestroy(){}
     }
 }
