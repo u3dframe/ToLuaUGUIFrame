@@ -10,7 +10,7 @@ using System;
 /// </summary>
 namespace Core.Kernel
 {
-	public class FileEx
+	public class FileEx : PathEx
 	{
 		//  是否存在 目录
 		static public bool IsFolder (string fn)
@@ -39,7 +39,7 @@ namespace Core.Kernel
 
 		static public string GetFolder (string fp)
 		{
-			string _fd = PathEx.GetFolderPath (fp);
+			string _fd = GetFolderPath (fp);
 			return ReplaceSeparator(_fd);
 		}
 

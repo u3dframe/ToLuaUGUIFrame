@@ -7,6 +7,8 @@ using UnityEditor;
 using BindType = ToLuaMenu.BindType;
 using System.Reflection;
 
+using Core;
+
 public static class CustomSettings
 {
     public static string saveDir = Application.dataPath + "/Source/Generate/";    
@@ -150,6 +152,19 @@ public static class CustomSettings
         _GT(typeof(RenderTexture)),
         _GT(typeof(Resources)),     
         _GT(typeof(LuaProfiler)),
+
+        //------------------------ 导出 工程封装的类 --------------------------------
+        _GT(typeof(GameFile)), // 会导出他所继承的类的Wrap文件
+
+        _GT(typeof(NetworkManager)),
+        _GT(typeof(TNet.ByteBuffer)),
+
+        _GT(typeof(LuaHelper)),
+        _GT(typeof(UGUICanvasAdaptive)),
+        _GT(typeof(UGUIEventListener)),
+
+        _GT(typeof(PrefabElement)),
+        //-------------------------------------------------------------------        
     };
 
     public static List<Type> dynamicList = new List<Type>()
