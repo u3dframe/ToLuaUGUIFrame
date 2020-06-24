@@ -68,13 +68,13 @@ public class NetworkManager : MonoBehaviour {
 	/// <summary>
 	/// 通知到lua那边
 	/// </summary>
-	void OnCF2Lua(int cmd,ByteBuffer data) {
+	void OnCF2Lua(int code,ByteBuffer data) {
 		if(data == null)
 			return;
 
-		bool isState = LuaHelper.CFuncLua(lua_func,cmd,data);
+		bool isState = LuaHelper.CFuncLua(lua_func,code,data);
 		if(!isState)
-			Debug.LogErrorFormat("=== OnCF2Lua Fails,lua func = [{0}], code = [{1}]",lua_func,cmd);
+			Debug.LogErrorFormat("=== OnCF2Lua Fails,lua func = [{0}], code = [{1}]",lua_func,code);
 	}
 
 	public NetworkManager InitNet(string host,int port,string luaFunc){

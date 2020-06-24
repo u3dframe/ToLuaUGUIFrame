@@ -212,8 +212,7 @@ public class SocketClient {
     // }
     void OnReceivedMessage(ByteBuffer data) {
         ByteBuffer buffer = data.ToReader();
-        int code = buffer.ReadInt();
-        NetworkManager.AddEvent(code, buffer);
+        NetworkManager.AddEvent(Protocal.Message, buffer);
     }
 
     /// <summary>
