@@ -18,7 +18,11 @@ public class FBXImporter : AssetPostprocessor
             importer.globalScale = 1.0f;
             importer.meshCompression = ModelImporterMeshCompression.Off;
             // importer.isReadable = false;
+#if UNITY_2019
+            importer.materialImportMode = ModelImporterMaterialImportMode.None;
+#else
             importer.importMaterials = false;
+#endif
         }
     }
 

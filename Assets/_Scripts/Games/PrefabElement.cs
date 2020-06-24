@@ -195,6 +195,7 @@ public class PrefabElement : MonoBehaviour
 	/// <summary>
 	/// 取得子对象的组件
 	/// </summary>
+	[LuaInterface.NoToLua]
 	public T GetComponent4Element<T>(string elName) where T : Component
 	{
 		GameObject gobj = GetGobjElement(elName);

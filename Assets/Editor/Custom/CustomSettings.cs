@@ -8,6 +8,7 @@ using BindType = ToLuaMenu.BindType;
 using System.Reflection;
 
 using Core;
+using Core.Kernel;
 
 public static class CustomSettings
 {
@@ -61,8 +62,8 @@ public static class CustomSettings
                         
         _GT(typeof(LuaInjectionStation)),
         _GT(typeof(InjectType)),
-        _GT(typeof(Debugger)).SetNameSpace(null),          
-
+        _GT(typeof(Debugger)).SetNameSpace(null),
+        _GT(typeof(AudioBehaviour)), // AudioSource 的父类
 #if USING_DOTWEENING
         _GT(typeof(DG.Tweening.DOTween)),
         _GT(typeof(DG.Tweening.Tween)).SetBaseType(typeof(System.Object)).AddExtendType(typeof(DG.Tweening.TweenExtensions)),
@@ -106,7 +107,12 @@ public static class CustomSettings
         _GT(typeof(Texture2D)),
         _GT(typeof(Shader)),        
         _GT(typeof(Renderer)),
+        _GT(typeof(WWWForm)),
+#if UNITY_2019
+        _GT(typeof(UnityEngine.Networking.UnityWebRequest)),
+#else
         _GT(typeof(WWW)),
+#endif
         _GT(typeof(Screen)),        
         _GT(typeof(CameraClearFlags)),
         _GT(typeof(AudioClip)),        
@@ -150,19 +156,23 @@ public static class CustomSettings
         _GT(typeof(RenderSettings)),                                                   
         _GT(typeof(SkinWeights)),           
         _GT(typeof(RenderTexture)),
-        _GT(typeof(Resources)),     
+        _GT(typeof(UnityEngine.Resources)),     
         _GT(typeof(LuaProfiler)),
 
         //------------------------ 导出 工程封装的类 --------------------------------
-        _GT(typeof(GameFile)), // 会导出他所继承的类的Wrap文件
-
+        _GT(typeof(PathEx)),
+        _GT(typeof(FileEx)),
+        _GT(typeof(ReadWriteHelper)),
+        _GT(typeof(Core.Kernel.Resources)),
+        _GT(typeof(GameFile)),
         _GT(typeof(NetworkManager)),
         _GT(typeof(TNet.ByteBuffer)),
+        _GT(typeof(WWWMgr)),
 
         _GT(typeof(LuaHelper)),
         _GT(typeof(UGUICanvasAdaptive)),
+        _GT(typeof(UnityEngine.EventSystems.EventTrigger)), // UGUIEventListener 的 父类
         _GT(typeof(UGUIEventListener)),
-
         _GT(typeof(PrefabElement)),
         //-------------------------------------------------------------------        
     };

@@ -28,7 +28,12 @@ public class ImportTexture : AssetPostprocessor
             {
                 m_nReset--;
 
+#if UNITY_2019
+                TextureImporterFormat curFmt;
+#else
                 TextureImporterFormat fmtAlpha, fmtNotAlpha, curFmt;
+#endif
+
                 TextureImporterPlatformSettings settings;
                 settings = importer.GetPlatformTextureSettings("iPhone");
 #if UNITY_2019
@@ -268,7 +273,7 @@ public class ImportTexture : AssetPostprocessor
      static void DeleteSpriteAtlas(Object _objFolder)
     {
         string _assetPath = BuildTools.GetPath(_objFolder);
-        string _fp = BuildTools.GetFullPath(_assetPath);
+        string _fp = BuildTools.GetFullPath4Ed(_assetPath);
         string _fd = _fp;
         if (_fp.Contains("."))
         {
@@ -292,7 +297,7 @@ public class ImportTexture : AssetPostprocessor
     static void ReSpriteAtlas(Object _objFolder)
     {
         string _assetPath = BuildTools.GetPath(_objFolder);
-        string _fp = BuildTools.GetFullPath(_assetPath);
+        string _fp = BuildTools.GetFullPath4Ed(_assetPath);
         string _fd = _fp;
         if (_fp.Contains("."))
         {
