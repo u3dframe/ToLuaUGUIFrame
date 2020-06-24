@@ -15,9 +15,7 @@ namespace Core
 		// zip 压缩文件列表(将文件分包体大小来压缩,减小解压时所需内存)
 		static public readonly string m_fpZipList = string.Concat (m_appContentPath,"ziplist.txt");
 		static public readonly string m_fmtZip = string.Concat (m_appContentPath,"resource{0}.zip");
-
-		// 大小包(主子包) - 主包资源记录(ab资源) 用于打包
-		static public readonly string m_fpMainRecordRes = string.Concat (Application.dataPath,"_mainRes.info");
+				
 		static public readonly char[] m_cSpRow = "\r\n\t".ToCharArray();
 		static public readonly char[] m_cSpComma = ",".ToCharArray();
 

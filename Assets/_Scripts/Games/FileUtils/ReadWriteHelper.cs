@@ -69,7 +69,7 @@ namespace Core.Kernel
 #elif UNITY_IOS
 		static public readonly string m_curPlatform = platformIOS;
 #else
-        static public readonly string m_curPlatform = platformWindows;
+        static public readonly string m_curPlatform = platformAndroid; // platformWindows
 #endif
 
         // 资源相对路径
@@ -147,6 +147,15 @@ namespace Core.Kernel
 			fp = string.Concat ("file://", fp);
 #endif
             return fp;
+        }
+
+        /// <summary>
+        /// manifest的路径
+        /// </summary>
+        static public string m_fpABManifest{
+            get{
+                return string.Format(m_dirRes,m_curPlatform);
+            }
         }
     }
 }
