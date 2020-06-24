@@ -25,6 +25,7 @@ public static class LuaHelper {
 	/// <summary>
 	/// 搜索子物体组件-GameObject版
 	/// </summary>
+	[NoToLua]
 	public static T Get<T>(GameObject go, string subnode) where T : Component {
 		if (go != null) {
 			Transform sub = go.transform.Find(subnode);
@@ -36,6 +37,7 @@ public static class LuaHelper {
 	/// <summary>
 	/// 搜索子物体组件-Transform版
 	/// </summary>
+	[NoToLua]
 	public static T Get<T>(Transform go, string subnode) where T : Component {
 		if (go != null) {
 			Transform sub = go.Find(subnode);
@@ -47,6 +49,7 @@ public static class LuaHelper {
 	/// <summary>
 	/// 搜索子物体组件-Component版
 	/// </summary>
+	[NoToLua]
 	public static T Get<T>(Component go, string subnode) where T : Component {
 		return go.transform.Find(subnode).GetComponent<T>();
 	}
@@ -54,6 +57,7 @@ public static class LuaHelper {
 	/// <summary>
 	/// 添加组件
 	/// </summary>
+	[NoToLua]
 	public static T Add<T>(GameObject go) where T : Component {
 		if (go != null) {
 			T[] ts = go.GetComponents<T>();
@@ -68,6 +72,7 @@ public static class LuaHelper {
 	/// <summary>
 	/// 添加组件
 	/// </summary>
+	[NoToLua]
 	public static T Add<T>(Transform go) where T : Component {
 		return Add<T>(go.gameObject);
 	}
