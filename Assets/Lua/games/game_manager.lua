@@ -6,7 +6,7 @@ local M = {}
 --游戏初始化主要接口
 function M.Init()
 	
-	require "define_luafp"
+	require "defines/define_luafp"
 
 	local _MG,_entity,_fp = _G;
 	for _,v in ipairs(_LuaFpNoKey) do
