@@ -10,7 +10,7 @@ namespace LuaInterface
     {
         protected IntPtr L;
 
-        string jit = @"            
+        protected string jit = @"            
         function Euler(x, y, z)
             x = x * 0.0087266462599716
             y = y * 0.0087266462599716
