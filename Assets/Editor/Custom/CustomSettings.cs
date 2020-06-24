@@ -9,6 +9,9 @@ using System.Reflection;
 
 using Core;
 using Core.Kernel;
+#if UNITY_2019
+using UnityEngine.Networking;
+#endif
 
 public static class CustomSettings
 {
@@ -109,7 +112,9 @@ public static class CustomSettings
         _GT(typeof(Renderer)),
         _GT(typeof(WWWForm)),
 #if UNITY_2019
-        _GT(typeof(UnityEngine.Networking.UnityWebRequest)),
+        _GT(typeof(UploadHandler)), // 上传
+        _GT(typeof(DownloadHandler)), // 下载
+        _GT(typeof(UnityWebRequest)),
 #else
         _GT(typeof(WWW)),
 #endif
