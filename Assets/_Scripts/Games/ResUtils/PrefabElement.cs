@@ -9,7 +9,7 @@ using System.Collections.Generic;
 /// 日期 : 2017-08-04 00:10
 /// 功能 : 脚本控制用
 /// </summary>
-public class PrefabElement : MonoBehaviour
+public class PrefabElement : GobjLifeListener
 {
 	// 自身对象
 	Transform _m_trsf;
@@ -69,7 +69,7 @@ public class PrefabElement : MonoBehaviour
 	/// <summary>
 	/// 销毁回调
 	/// </summary>
-	public System.Action m_callDestroy;
+	// public System.Action m_callDestroy;
 	
 	void Awake()
 	{
@@ -90,11 +90,11 @@ public class PrefabElement : MonoBehaviour
 			m_callShow ();
 	}
 
-	void  OnDestroy()
-	{
-		if (m_callDestroy != null)
-			m_callDestroy ();
-	}
+	// void  OnDestroy()
+	// {
+	// 	if (m_callDestroy != null)
+	// 		m_callDestroy ();
+	// }
 	
 	void Init()
 	{
