@@ -12,6 +12,8 @@ using Core.Kernel;
 #if UNITY_2019
 using UnityEngine.Networking;
 #endif
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public static class CustomSettings
 {
@@ -164,7 +166,15 @@ public static class CustomSettings
         _GT(typeof(UnityEngine.Resources)),     
         _GT(typeof(LuaProfiler)),
 
-        //------------------------ 导出 工程封装的类 --------------------------------
+        //------------------------ ugui --------------------------------
+        _GT(typeof(UIBehaviour)),
+        _GT(typeof(Graphic)),
+        _GT(typeof(MaskableGraphic)),
+        _GT(typeof(Text)),
+        _GT(typeof(Image)),
+        _GT(typeof(RawImage)),
+        _GT(typeof(EventTrigger)), // UGUIEventListener 的 父类
+        //------------------------ 导出 工程封装的类 ---------------------
         _GT(typeof(PathEx)),
         _GT(typeof(FileEx)),
         _GT(typeof(ReadWriteHelper)),
@@ -176,10 +186,12 @@ public static class CustomSettings
 
         _GT(typeof(LuaHelper)),
         _GT(typeof(UGUICanvasAdaptive)),
-        _GT(typeof(UnityEngine.EventSystems.EventTrigger)), // UGUIEventListener 的 父类
         _GT(typeof(UGUIEventListener)),
+        _GT(typeof(GobjLifeListener)),
         _GT(typeof(PrefabElement)),
-        //-------------------------------------------------------------------        
+        _GT(typeof(Localization)),
+        _GT(typeof(UGUILocalize)),
+        //---------------------------------------------------------------        
     };
 
     public static List<Type> dynamicList = new List<Type>()

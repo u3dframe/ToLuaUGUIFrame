@@ -18,6 +18,7 @@ namespace Core
 				
 		static public readonly char[] m_cSpRow = "\r\n\t".ToCharArray();
 		static public readonly char[] m_cSpComma = ",".ToCharArray();
+		static public readonly char[] m_cSpEqual = "=".ToCharArray();
 
 		// 编辑模式
 		static public bool isEditor{
@@ -132,16 +133,20 @@ namespace Core
 			return ReUrlTime (url, fn);
 		}
 
-		static public string[] SplitRow(string val){
-			if(string.IsNullOrEmpty(val))
+		static public string[] Split(string val,char[] spt,bool isRmEmpty){
+			if(string.IsNullOrEmpty(val) || spt == null || spt.Length <= 0)
 				return null;
-			return val.Split(m_cSpRow,System.StringSplitOptions.RemoveEmptyEntries);
+			System.StringSplitOptions _sp = System.StringSplitOptions.None;
+			if(isRmEmpty) _sp = System.StringSplitOptions.RemoveEmptyEntries;
+			return val.Split(spt,_sp);
+		}
+
+		static public string[] SplitRow(string val){
+			return Split(val,m_cSpRow,true);
 		}
 
 		static public string[] SplitComma(string val){
-			if(string.IsNullOrEmpty(val))
-				return null;
-			return val.Split(m_cSpComma,System.StringSplitOptions.None);
+			return Split(val,m_cSpComma,false);
 		}
 
 		static public bool IsNullOrEmpty(string[] arrs){
