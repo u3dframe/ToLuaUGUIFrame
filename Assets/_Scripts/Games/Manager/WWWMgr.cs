@@ -16,20 +16,13 @@ namespace Core.Kernel
 		static public WWWMgr instance{
 			get{
 				if (_instance == null) {
-					string NM_Gobj = "GameManager";
-					GameObject _gobj = GameObject.Find(NM_Gobj);
-					if (!_gobj)
-					{
-						_gobj = new GameObject(NM_Gobj, typeof(WWWMgr));
-					}
+					GameObject _gobj = GameMgr.mgrGobj;
 					_instance = _gobj.GetComponent<WWWMgr>();
 					if (_instance == null)
 					{
 						_instance = _gobj.AddComponent<WWWMgr> ();
 					}
-					GameObject.DontDestroyOnLoad (_gobj);
 				}
-
 				return _instance;
 			}
 		}

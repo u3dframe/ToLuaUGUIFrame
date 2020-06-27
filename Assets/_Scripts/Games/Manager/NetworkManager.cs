@@ -4,25 +4,18 @@ using System.Collections;
 using System.Collections.Generic;
 using TNet;
 
-public class NetworkManager : MonoBehaviour {
+public class NetworkManager : MonoBehaviour,IUpdate {
 	static NetworkManager _instance;
 	static public NetworkManager instance{
 		get{
 			if (_instance == null) {
-				string NM_Gobj = "GameManager";
-				GameObject _gobj = GameObject.Find(NM_Gobj);
-				if (!_gobj)
-				{
-					_gobj = new GameObject(NM_Gobj, typeof(NetworkManager));
-				}
+				GameObject _gobj = GameMgr.mgrGobj;
 				_instance = _gobj.GetComponent<NetworkManager>();
 				if (_instance == null)
 				{
 					_instance = _gobj.AddComponent<NetworkManager> ();
 				}
-				GameObject.DontDestroyOnLoad (_gobj);
 			}
-
 			return _instance;
 		}
 	}
@@ -41,12 +34,13 @@ public class NetworkManager : MonoBehaviour {
 	void Awake(){
 		socket = new SocketClient();
 		socket.OnRegister();
+		GameMgr.RegisterUpdate(this);
 	}
 
 	/// <summary>
 	///  更新 - 接受到数据
 	/// </summary>
-	void Update() {
+	public void OnUpdate(float dt) {
 		if (mEvents.Count > 0) {
 			while (mEvents.Count > 0) {
 				KeyValuePair<int, ByteBuffer> _event = mEvents.Dequeue();
@@ -62,6 +56,7 @@ public class NetworkManager : MonoBehaviour {
 	/// 销毁
 	/// </summary>
 	void OnDestroy() {
+		GameMgr.DiscardUpdate(this);
 		socket.OnRemove();
 	}
 

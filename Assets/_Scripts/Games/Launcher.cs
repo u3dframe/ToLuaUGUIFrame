@@ -7,6 +7,7 @@ public class Launcher : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GameMgr.instance.Init();
         GameObject gobj = new GameObject("LuaLooper",typeof(GameLuaClient));
         GameObject.DontDestroyOnLoad(gobj);
     }
