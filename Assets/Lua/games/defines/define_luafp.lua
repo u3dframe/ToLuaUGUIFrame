@@ -2,6 +2,7 @@
 _LuaPacakge = {
 	[1] = "games/defines/",
 	[2] = "games/net/",
+	[2] = "ugui/",
 }
 
 -- 不需要全局变量的
