@@ -83,7 +83,7 @@ static public class Localization
 	
 	static bool Load (ref string val,bool isCsv)
 	{
-		if (string.IsNullOrEmpty(val)) val = GameLanguage.m_curLanguage.ToString();
+		if (string.IsNullOrEmpty(val)) val = GameLanguage.strCurLanguage;
 		if(mDicLgs.ContainsKey(val))
 		{
 			return true;

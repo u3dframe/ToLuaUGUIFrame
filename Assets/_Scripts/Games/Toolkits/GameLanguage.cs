@@ -79,6 +79,14 @@ public static class GameLanguage
         }
     }
 
+	static public string strCurLanguage
+    {
+		get
+        {
+			return m_curLanguage.ToString();
+        }
+    }
+
     // 转为限定的语言(每新增一个必须添加)
     static public SystemLanguage ToLmtLanguage(SystemLanguage sLg){
 		if(m_cfLmtLanguage != null) return m_cfLmtLanguage(sLg);
@@ -119,7 +127,7 @@ public static class GameLanguage
 	static public void Set(SystemLanguage sLg)
 	{
 		m_curLanguage = ToLmtLanguage(sLg);
-		PlayerPrefs.SetString(keyLanguage, m_curLanguage.ToString());
+		PlayerPrefs.SetString(keyLanguage, strCurLanguage);
 	}
 	
 	static public bool Set(string language)

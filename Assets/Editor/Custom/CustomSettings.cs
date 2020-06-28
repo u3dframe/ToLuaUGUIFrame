@@ -180,9 +180,12 @@ public static class CustomSettings
         _GT(typeof(ReadWriteHelper)),
         _GT(typeof(Core.Kernel.Resources)),
         _GT(typeof(GameFile)),
-        _GT(typeof(NetworkManager)),
         _GT(typeof(TNet.ByteBuffer)),
+        
+        _GT(typeof(GameMgr)),
+        _GT(typeof(NetworkManager)),
         _GT(typeof(WWWMgr)),
+        _GT(typeof(GameLanguage)),
 
         _GT(typeof(LuaHelper)),
         _GT(typeof(UGUICanvasAdaptive)),

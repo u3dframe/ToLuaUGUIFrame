@@ -57,7 +57,8 @@ public class GameMgr : MonoBehaviour {
 	/// </summary>
 	public void Init()
 	{
-		Localization.language = PlayerPrefs.GetString("Language", "English");
+		GameLanguage.Init();
+		Localization.language = GameLanguage.strCurLanguage;
 	}
 
 	/// <summary>
