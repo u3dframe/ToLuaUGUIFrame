@@ -4,6 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using TNet;
 
+public delegate void DF_OnUpdate(float dt);
+
 /// <summary>
 /// 类名 : Update 管理
 /// 作者 : Canyon
@@ -43,7 +45,9 @@ public class GameMgr : MonoBehaviour {
 		}
 	}
 	
-	static List<IUpdate> mListUps = new List<IUpdate>();
+	static public DF_OnUpdate onUpdate = null;
+	static List<IUpdate> mListUps = new List<IUpdate>(); // 无用质疑，直接调用函数，比代理事件快
+
 	int lens = 0;
 	IUpdate _item = null;
 	float _dt = 0;
@@ -53,14 +57,15 @@ public class GameMgr : MonoBehaviour {
 	/// </summary>
 	public void Init()
 	{
+		Localization.language = PlayerPrefs.GetString("Language", "English");
 	}
 
 	/// <summary>
 	///  更新 - 接受到数据
 	/// </summary>
 	void Update() {
+		_dt = Time.deltaTime;
 		lock(mListUps){
-			_dt = Time.deltaTime;
 			lens = mListUps.Count;
 			for (int i = 0; i < lens; i++)
 			{
@@ -69,6 +74,11 @@ public class GameMgr : MonoBehaviour {
 					_item.OnUpdate(_dt);
 				}
 			}
+		}
+
+		if(onUpdate != null)
+		{
+			onUpdate(_dt);
 		}
 	}
 
@@ -79,7 +89,7 @@ public class GameMgr : MonoBehaviour {
 		mListUps.Clear();
 	}
 	
-	public static void RegisterUpdate(IUpdate up) {
+	static public void RegisterUpdate(IUpdate up) {
 		lock (mListUps) {
 			if(mListUps.Contains(up))
 				return;
@@ -87,7 +97,7 @@ public class GameMgr : MonoBehaviour {
 		}
 	}
 
-	public static void DiscardUpdate(IUpdate up) {
+	static public void DiscardUpdate(IUpdate up) {
 		lock (mListUps) {
 			mListUps.Remove(up);
 		}
