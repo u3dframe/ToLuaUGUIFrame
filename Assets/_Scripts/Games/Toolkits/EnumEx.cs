@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System;
 
 /// 类名 : 枚举工具
@@ -23,7 +22,9 @@ public static class EnumEx {
 
     //  字符串转换为枚举:该字符串可以是key,也可以是val的ToString();
     static public object ToEnum(Type enumType, string val) {
-        return Enum.Parse(enumType, val, true);
+        if(IsHas(enumType,val))
+            return Enum.Parse(enumType, val, true);
+        return null;
     }
 
     static public object ToEnum(Type enumType, int val) {
@@ -31,8 +32,9 @@ public static class EnumEx {
     }
 
     static public T Str2Enum<T>(Type enumType, string val) {
-        if(IsHas(enumType,val))
-            return (T)ToEnum(enumType, val);
+        object v = ToEnum(enumType, val);
+        if(v != null)
+            return (T)v;
         return default(T);
     }
 
