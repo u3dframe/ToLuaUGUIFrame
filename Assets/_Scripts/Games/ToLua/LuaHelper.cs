@@ -10,23 +10,39 @@ public static class LuaHelper {
 	/// </summary>
 	/// <param name="classname"></param>
 	/// <returns></returns>
-	public static System.Type GetType(string classname) {
+	static public System.Type GetType(string classname) {
 		Assembly assb = Assembly.GetExecutingAssembly();  //.GetExecutingAssembly();
 		System.Type t = null;
 		t = assb.GetType(classname);
 		return t;
 	}
 	
-	public static long GetTime() {
+	static public long GetTime() {
 		TimeSpan ts = new TimeSpan(DateTime.UtcNow.Ticks - new DateTime(1970, 1, 1, 0, 0, 0).Ticks);
 		return (long)ts.TotalMilliseconds;
+	}
+
+	[NoToLua]
+	static public T Get<T>(GameObject go) where T : Component {
+		if (go != null) {
+			return go.GetComponent<T>();
+		}
+		return null;
+	}
+
+	[NoToLua]
+	static public T Get<T>(Transform trsf) where T : Component {
+		if (trsf != null) {
+			return trsf.GetComponent<T>();
+		}
+		return null;
 	}
 
 	/// <summary>
 	/// 搜索子物体组件-GameObject版
 	/// </summary>
 	[NoToLua]
-	public static T Get<T>(GameObject go, string subnode) where T : Component {
+	static public T Get<T>(GameObject go, string subnode) where T : Component {
 		if (go != null) {
 			Transform sub = go.transform.Find(subnode);
 			if (sub != null) return sub.GetComponent<T>();
@@ -38,7 +54,7 @@ public static class LuaHelper {
 	/// 搜索子物体组件-Transform版
 	/// </summary>
 	[NoToLua]
-	public static T Get<T>(Transform go, string subnode) where T : Component {
+	static public T Get<T>(Transform go, string subnode) where T : Component {
 		if (go != null) {
 			Transform sub = go.Find(subnode);
 			if (sub != null) return sub.GetComponent<T>();
@@ -50,7 +66,7 @@ public static class LuaHelper {
 	/// 搜索子物体组件-Component版
 	/// </summary>
 	[NoToLua]
-	public static T Get<T>(Component go, string subnode) where T : Component {
+	static public T Get<T>(Component go, string subnode) where T : Component {
 		return go.transform.Find(subnode).GetComponent<T>();
 	}
 
@@ -58,7 +74,7 @@ public static class LuaHelper {
 	/// 添加组件
 	/// </summary>
 	[NoToLua]
-	public static T Add<T>(GameObject go) where T : Component {
+	static public T Add<T>(GameObject go) where T : Component {
 		if (go != null) {
 			T[] ts = go.GetComponents<T>();
 			for (int i = 0; i < ts.Length; i++) {
@@ -73,46 +89,107 @@ public static class LuaHelper {
 	/// 添加组件
 	/// </summary>
 	[NoToLua]
-	public static T Add<T>(Transform go) where T : Component {
+	static public T Add<T>(Transform go) where T : Component {
 		return Add<T>(go.gameObject);
 	}
 
 	/// <summary>
-	/// 查找子对象
+	/// 递归查找子对象
 	/// </summary>
-	public static GameObject Child(GameObject go, string subnode) {
-		return Child(go.transform, subnode);
+	static public Transform ChildRecursion(Transform trsf, string subnode) {
+		if (trsf == null) return null;
+		if(trsf.name.Equals(subnode)) return trsf;
+		int lens = trsf.childCount;
+		Transform _ret = null; 
+		for(int i = 0; i < lens;i++){
+			_ret = ChildRecursion(trsf.GetChild(i),subnode);
+			if(_ret != null)
+				return _ret;
+		}
+		return null;
+	}
+
+	static public GameObject ChildRecursion(GameObject gobj, string subnode) {
+		if (gobj == null) return null;
+		Transform trsf = ChildRecursion(gobj.transform,subnode);
+		if (trsf == null) return null;
+		return trsf.gameObject;
 	}
 
 	/// <summary>
 	/// 查找子对象
 	/// </summary>
-	public static GameObject Child(Transform go, string subnode) {
-		Transform tran = go.Find(subnode);
-		if (tran == null) return null;
-		return tran.gameObject;
+	static public Transform ChildTrsf(Transform trsf, string subnode) {
+		if (trsf == null) return null;
+		return trsf.Find(subnode);
+	}
+
+	static public Transform ChildTrsf(GameObject gobj, string subnode) {
+		if(gobj == null) return null;
+		return ChildTrsf(gobj.transform,subnode);
+	}
+
+	static public GameObject Child(Transform trsf, string subnode) {
+		Transform tf = ChildTrsf(trsf,subnode);
+		if (tf == null) return null;
+		return tf.gameObject;
+	}
+
+	/// <summary>
+	/// 查找子对象
+	/// </summary>
+	static public GameObject Child(GameObject gobj, string subnode) {
+		if(gobj == null) return null;
+		return Child(gobj.transform, subnode);
 	}
 
 	/// <summary>
 	/// 取平级对象
 	/// </summary>
-	public static GameObject Peer(GameObject go, string subnode) {
-		return Peer(go.transform, subnode);
+	static public GameObject Peer(Transform trsf, string subnode) {
+		if(trsf == null) return null;
+		return Child(trsf.parent,subnode);
 	}
-
+	
 	/// <summary>
 	/// 取平级对象
 	/// </summary>
-	public static GameObject Peer(Transform go, string subnode) {
-		Transform tran = go.parent.Find(subnode);
-		if (tran == null) return null;
-		return tran.gameObject;
+	static public GameObject Peer(GameObject gobj, string subnode) {
+		if(gobj == null) return null;
+		return Peer(gobj.transform, subnode);
+	}
+
+	/// <summary>
+	/// 设置父节点
+	/// </summary>
+	static public void SetParent(Transform trsf,Transform trsfParent,bool isLocalZero) {
+		if(trsf == null) return;
+		trsf.SetParent (trsfParent,!isLocalZero);
+	}
+
+	static public void SetParent(Transform trsf,Transform trsfParent) {
+		SetParent(trsf,trsfParent,true); 
+	}
+
+	/// <summary>
+	/// 设置父节点
+	/// </summary>
+	static public void SetParent(GameObject gobj, GameObject gobjParent,bool isLocalZero) {
+		if(gobj == null) return;
+		Transform trsf = gobj.transform;
+		Transform trsfParent = null;
+		if (gobjParent != null) trsfParent = gobjParent.transform;
+		SetParent(trsf, trsfParent, isLocalZero);
+	}
+
+	static public void SetParent(GameObject gobj, GameObject gobjParent) {
+		SetParent(gobj,gobjParent,true); 
 	}
 
 	/// <summary>
 	/// 清理内存
 	/// </summary>
-	public static void ClearMemory() {
+	static public void ClearMemory() {
 		GC.Collect(); Resources.UnloadUnusedAssets();
 		GameLuaClient mgr = (GameLuaClient)GameLuaClient.Instance;
 		if (mgr != null) mgr.LuaGC();
@@ -121,7 +198,7 @@ public static class LuaHelper {
 	/// <summary>
 	/// 最多9个参数
 	/// </summary>
-	public static bool CFuncLua(string funcName, params object[] args) {
+	static public bool CFuncLua(string funcName, params object[] args) {
 		GameLuaClient mgr = (GameLuaClient)GameLuaClient.Instance;
 		if (mgr != null) { return mgr.CFuncLua(funcName,args); } 
 		return false;
@@ -130,7 +207,7 @@ public static class LuaHelper {
 	/// <summary>
 	/// 网络可用
 	/// </summary>
-	public static bool NetAvailable {
+	static public bool NetAvailable {
 		get {
 			return Application.internetReachability != NetworkReachability.NotReachable;
 		}
@@ -139,21 +216,21 @@ public static class LuaHelper {
 	/// <summary>
 	/// 是否是无线
 	/// </summary>
-	public static bool IsWifi {
+	static public bool IsWifi {
 		get {
 			return Application.internetReachability == NetworkReachability.ReachableViaLocalAreaNetwork;
 		}
 	}
 	
-	public static void Log(string str) {
+	static public void Log(string str) {
 		Debug.Log(str);
 	}
 
-	public static void LogWarning(string str) {
+	static public void LogWarning(string str) {
 		Debug.LogWarning(str);
 	}
 
-	public static void LogError(string str) {
+	static public void LogError(string str) {
 		Debug.LogError(str);
 	}
 }
