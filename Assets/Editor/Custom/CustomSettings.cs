@@ -167,6 +167,7 @@ public static class CustomSettings
         _GT(typeof(LuaProfiler)),
 
         //------------------------ ugui --------------------------------
+        _GT(typeof(RectTransform)),
         _GT(typeof(UIBehaviour)),
         _GT(typeof(Graphic)),
         _GT(typeof(MaskableGraphic)),

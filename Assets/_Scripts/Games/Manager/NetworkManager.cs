@@ -27,6 +27,9 @@ public class NetworkManager : MonoBehaviour,IUpdate {
 	string lua_func = "Network.OnSocket";
 	String m_host = null;
 	int m_port = 0;
+
+	public bool m_isOnUpdate = true;
+	public bool IsOnUpdate(){ return this.m_isOnUpdate;} 
 	
 	/// <summary>
 	///  初始化
@@ -34,6 +37,7 @@ public class NetworkManager : MonoBehaviour,IUpdate {
 	void Awake(){
 		socket = new SocketClient();
 		socket.OnRegister();
+		m_isOnUpdate = true;
 		GameMgr.RegisterUpdate(this);
 	}
 
@@ -56,6 +60,7 @@ public class NetworkManager : MonoBehaviour,IUpdate {
 	/// 销毁
 	/// </summary>
 	void OnDestroy() {
+		m_isOnUpdate = false;
 		GameMgr.DiscardUpdate(this);
 		socket.OnRemove();
 	}

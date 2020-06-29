@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System;
-
+/// <summary>
 /// 类名 : 枚举工具
 /// 作者 : Canyon / 龚阳辉
 /// 日期 : 2014-09-09 09:33

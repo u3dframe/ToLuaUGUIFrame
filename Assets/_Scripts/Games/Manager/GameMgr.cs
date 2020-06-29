@@ -17,7 +17,7 @@ public class GameMgr : MonoBehaviour {
 	static GameObject _mgrGobj;
 	static public GameObject mgrGobj{
 		get{
-			if (!!_mgrGobj) {
+			if (_mgrGobj == null) {
 				string NM_Gobj = "GameManager";
 				_mgrGobj = GameObject.Find(NM_Gobj);
 				if (!_mgrGobj)
@@ -45,11 +45,12 @@ public class GameMgr : MonoBehaviour {
 		}
 	}
 	
-	static public DF_OnUpdate onUpdate = null;
+	static DF_OnUpdate onUpdate = null;
 	static List<IUpdate> mListUps = new List<IUpdate>(); // 无用质疑，直接调用函数，比代理事件快
 
-	int lens = 0;
-	IUpdate _item = null;
+	List<IUpdate> upList = new List<IUpdate>(); 
+	int upLens = 0;
+	IUpdate upItem = null;
 	float _dt = 0;
 	
 	/// <summary>
@@ -59,6 +60,9 @@ public class GameMgr : MonoBehaviour {
 	{
 		GameLanguage.Init();
 		Localization.language = GameLanguage.strCurLanguage;
+		
+		GameObject gobj = new GameObject("LuaLooper",typeof(GameLuaClient));
+        GameObject.DontDestroyOnLoad(gobj);
 	}
 
 	/// <summary>
@@ -66,16 +70,16 @@ public class GameMgr : MonoBehaviour {
 	/// </summary>
 	void Update() {
 		_dt = Time.deltaTime;
-		lock(mListUps){
-			lens = mListUps.Count;
-			for (int i = 0; i < lens; i++)
-			{
-				_item = mListUps[i];
-				if(_item != null){
-					_item.OnUpdate(_dt);
-				}
+		upList.AddRange(mListUps);
+		upLens = upList.Count;
+		for (int i = 0; i < upLens; i++)
+		{
+			upItem = upList[i];
+			if(upItem != null && upItem.IsOnUpdate()){
+				upItem.OnUpdate(_dt);
 			}
 		}
+		upList.Clear();
 
 		if(onUpdate != null)
 		{
@@ -91,16 +95,23 @@ public class GameMgr : MonoBehaviour {
 	}
 	
 	static public void RegisterUpdate(IUpdate up) {
-		lock (mListUps) {
-			if(mListUps.Contains(up))
-				return;
-			mListUps.Add(up);
-		}
+		if(mListUps.Contains(up))
+			return;
+		mListUps.Add(up);
 	}
 
 	static public void DiscardUpdate(IUpdate up) {
-		lock (mListUps) {
-			mListUps.Remove(up);
+		mListUps.Remove(up);
+	}
+
+	static public void DisposeUpEvent(DF_OnUpdate call,bool isReBind) {
+		onUpdate -= call;
+		if(isReBind)
+		{
+			if(onUpdate == null)
+				onUpdate = call;
+			else
+				onUpdate += call;
 		}
 	}
 }

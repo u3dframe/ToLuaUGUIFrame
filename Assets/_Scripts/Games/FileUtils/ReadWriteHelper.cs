@@ -148,14 +148,5 @@ namespace Core.Kernel
 #endif
             return fp;
         }
-
-        /// <summary>
-        /// manifest的路径
-        /// </summary>
-        static public string m_fpABManifest{
-            get{
-                return string.Format(m_dirRes,m_curPlatform);
-            }
-        }
     }
 }

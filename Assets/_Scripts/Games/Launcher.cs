@@ -8,8 +8,6 @@ public class Launcher : MonoBehaviour
     void Start()
     {
         GameMgr.instance.Init();
-        GameObject gobj = new GameObject("LuaLooper",typeof(GameLuaClient));
-        GameObject.DontDestroyOnLoad(gobj);
     }
 
     // Update is called once per frame

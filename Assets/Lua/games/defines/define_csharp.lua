@@ -12,5 +12,5 @@ CNetMgr = NetworkManager
 CGameFile = Core.GameFile
 
 -- Charpe 的 常量 cost 属性 ([[初始化后，不会在变化的属性]])
-GM_IsEditor = GameFile.isEditor
+GM_IsEditor = CGameFile.isEditor
 -- TP_UText = typeof(UText)

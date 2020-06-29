@@ -154,5 +154,14 @@ namespace Core
 				return true;
 			return false;
 		}
+
+		/// <summary>
+        /// manifest的路径
+        /// </summary>
+        static public string m_fpABManifest{
+            get{
+                return GetPath(m_curPlatform);
+            }
+        }
 	}
 }

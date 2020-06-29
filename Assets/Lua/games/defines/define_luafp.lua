@@ -2,13 +2,14 @@
 _LuaPacakge = {
 	[1] = "games/defines/",
 	[2] = "games/net/",
-	[2] = "ugui/",
+	[3] = "ugui/",
 }
 
 -- 不需要全局变量的
 _LuaFpNoKey = {
 	"luaex/toolex",
 	"class",
+	"ugui/ugui_base",
 }
 
 -- 需要全局变量的
@@ -19,6 +20,4 @@ _LuaFpKv = {
 	{"","define_global",1}, -- 常量 全局变量 
 	{"","protocal",2}, -- 常量 网络层协议
 	{"Network","network",2}, -- 网络层
-
-	
 }

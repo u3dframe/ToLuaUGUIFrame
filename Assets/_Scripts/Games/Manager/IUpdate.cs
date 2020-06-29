@@ -5,5 +5,6 @@
 /// 功能 : 所有Update
 /// </summary>
 public interface IUpdate {
+    bool IsOnUpdate(); // 是否可以调用 OnUpdate 函数
     void OnUpdate(float dt);   
 }
