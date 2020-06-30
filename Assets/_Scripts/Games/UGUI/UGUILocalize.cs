@@ -13,12 +13,16 @@ using UnityEngine.UI;
 [AddComponentMenu("UI/UGUILocalize")]
 public class UGUILocalize : MonoBehaviour {
 	// 取得对象
-	static public UGUILocalize Get(GameObject gobj){
+	static public UGUILocalize Get(GameObject gobj,bool isAdd){
 		UGUILocalize _r = gobj.GetComponent<UGUILocalize> ();
-		if (!_r) {
+		if (isAdd && _r == null) {
 			_r = gobj.AddComponent<UGUILocalize> ();
 		}
 		return _r;
+	}
+
+	static public UGUILocalize Get(GameObject gobj){
+		return Get(gobj,true);
 	}
 
 	public string m_key = "";

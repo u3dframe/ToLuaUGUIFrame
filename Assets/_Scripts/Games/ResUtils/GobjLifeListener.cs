@@ -10,12 +10,16 @@ public delegate void OnNotifyDestry(GobjLifeListener obj);
 /// 功能 : 只针对 OnDestroy的回调
 /// </summary>
 public class GobjLifeListener : MonoBehaviour,IUpdate {
-	static public GobjLifeListener Get(GameObject gobj){
+	static public GobjLifeListener Get(GameObject gobj,bool isAdd){
 		GobjLifeListener _r = gobj.GetComponent<GobjLifeListener> ();
-		if (!_r) {
+		if (isAdd && _r == null) {
 			_r = gobj.AddComponent<GobjLifeListener> ();
 		}
 		return _r;
+	}
+
+	static public GobjLifeListener Get(GameObject gobj){
+		return Get(gobj,true);
 	}
 
 	// 接口函数
@@ -52,12 +56,12 @@ public class GobjLifeListener : MonoBehaviour,IUpdate {
 		_ExcDestoryCall();
 	}
 
-	public void DetroyComp(bool isCallDestroy){
+	public void DetroySelf(bool isCallDestroy){
 		this.m_isCallDestroy = isCallDestroy;
 		GameObject.Destroy(this);
 	}
 
-	public void DetroyComp(){
-		DetroyComp(true);
+	public void DetroySelf(){
+		DetroySelf(true);
 	}
 }

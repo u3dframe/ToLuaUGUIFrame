@@ -9,6 +9,18 @@ using UnityEngine.EventSystems;
 /// 功能 : 处理UGUI界面上事件
 /// </summary>
 public class UGUIEventListener : EventTrigger {
+	static public UGUIEventListener Get(GameObject gobj,bool isAdd){
+		UGUIEventListener _r = gobj.GetComponent<UGUIEventListener> ();
+		if (isAdd && _r == null) {
+			_r = gobj.AddComponent<UGUIEventListener> ();
+		}
+		return _r;
+	}
+
+	static public UGUIEventListener Get(GameObject gobj){
+		return Get(gobj,true);
+	}
+
 	[System.NonSerialized]
 	public System.Action<GameObject,Vector2> onMouseEnter;
 
@@ -81,13 +93,4 @@ public class UGUIEventListener : EventTrigger {
 			onDrop (gameObject,eventData.position);
 		}
     }
-
-	// 取得对象
-	static public UGUIEventListener Get(GameObject gobj){
-		UGUIEventListener rader = gobj.GetComponent<UGUIEventListener> ();
-		if (rader == null) {
-			rader = gobj.AddComponent<UGUIEventListener> ();
-		}
-		return rader;
-	}
 }

@@ -9,8 +9,19 @@ using System.Collections.Generic;
 /// 日期 : 2017-08-04 00:10
 /// 功能 : 脚本控制用
 /// </summary>
-public class PrefabElement : GobjLifeListener
-{
+public class PrefabElement : GobjLifeListener {
+	static public new PrefabElement Get(GameObject gobj,bool isAdd){
+		PrefabElement _r = gobj.GetComponent<PrefabElement> ();
+		if (isAdd && _r == null) {
+			_r = gobj.AddComponent<PrefabElement> ();
+		}
+		return _r;
+	}
+
+	static public new PrefabElement Get(GameObject gobj){
+		return Get(gobj,true);
+	}
+
 	// 自身对象
 	Transform _m_trsf;
 	
@@ -98,6 +109,9 @@ public class PrefabElement : GobjLifeListener
 	
 	void Init()
 	{
+		if(m_gobjs == null)
+			return;
+		
 		if(isInit)
 			return;
 		isInit = true;

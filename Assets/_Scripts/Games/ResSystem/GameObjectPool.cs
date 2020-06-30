@@ -5,7 +5,7 @@ namespace Core{
 	/// 类名 : GameObject 对象池
 	/// 作者 : Canyon / 龚阳辉
 	/// 日期 : 2020-06-26 10:29
-	/// 功能 : 暂时不考虑同名，不同类型的资源
+	/// 功能 : 
 	/// </summary>
 	internal class GameObjectPool
 	{
