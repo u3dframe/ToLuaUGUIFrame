@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TNet;
 
-public class NetworkManager : MonoBehaviour,IUpdate {
+public class NetworkManager : GobjLifeListener {
 	static NetworkManager _instance;
 	static public NetworkManager instance{
 		get{
@@ -28,9 +28,6 @@ public class NetworkManager : MonoBehaviour,IUpdate {
 	String m_host = null;
 	int m_port = 0;
 
-	public bool m_isOnUpdate = true;
-	public bool IsOnUpdate(){ return this.m_isOnUpdate;} 
-	
 	/// <summary>
 	///  初始化
 	/// </summary>
@@ -44,7 +41,7 @@ public class NetworkManager : MonoBehaviour,IUpdate {
 	/// <summary>
 	///  更新 - 接受到数据
 	/// </summary>
-	public void OnUpdate(float dt) {
+	public override void OnUpdate(float dt) {
 		if (mEvents.Count > 0) {
 			while (mEvents.Count > 0) {
 				KeyValuePair<int, ByteBuffer> _event = mEvents.Dequeue();
@@ -59,8 +56,7 @@ public class NetworkManager : MonoBehaviour,IUpdate {
 	/// <summary>
 	/// 销毁
 	/// </summary>
-	void OnDestroy() {
-		m_isOnUpdate = false;
+	protected override void OnCall4Destroy() {
 		GameMgr.DiscardUpdate(this);
 		socket.OnRemove();
 	}

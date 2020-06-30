@@ -183,6 +183,7 @@ public static class CustomSettings
         _GT(typeof(GameFile)),
         _GT(typeof(TNet.ByteBuffer)),
         
+        _GT(typeof(GobjLifeListener)),
         _GT(typeof(GameMgr)),
         _GT(typeof(NetworkManager)),
         _GT(typeof(WWWMgr)),
@@ -191,10 +192,14 @@ public static class CustomSettings
         _GT(typeof(LuaHelper)),
         _GT(typeof(UGUICanvasAdaptive)),
         _GT(typeof(UGUIEventListener)),
-        _GT(typeof(GobjLifeListener)),
+        _GT(typeof(UGUIEventSystem)),
         _GT(typeof(PrefabElement)),
         _GT(typeof(Localization)),
         _GT(typeof(UGUILocalize)),
+        _GT(typeof(AssetBase)),
+        _GT(typeof(AssetInfo)),
+        _GT(typeof(ABInfo)),
+        _GT(typeof(AssetBundleManager)),
         //---------------------------------------------------------------        
     };
 
