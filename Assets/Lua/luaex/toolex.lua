@@ -49,7 +49,12 @@ local function _sort_key( a,b )
 	return str_byte(a) < str_byte(b);
 end
 
-function printTable( tb,title,notSort,rgb )
+local _pfunc = nil;
+function setPTabFunc( pfunc )
+	_pfunc = pfunc;
+end
+
+function printTable( tb,title,rgb,notSort )
 	rgb = rgb or "09f68f";
 	if not tb or type(tb) ~= "table" then
 		title = str_format(_fmtColor,rgb,tb)
@@ -110,18 +115,22 @@ function printTable( tb,title,notSort,rgb )
 		end
 
 		title = str_format("%s = %s",(title or ""),tb);
-		tb_insert( str, str_format("\n====== beg [%s]------[%s]\n", title, os.date("%H:%M:%S") )  )
+		tb_insert( str, str_format("\n=== beg [%s]--[%s]\n", title, os.date("%H:%M:%S") )  )
 		_str_temp = tostring(tb)
 		_dic[_str_temp] = true;
 		_printTable( tb )
-		tb_insert( str, str_format("\n====== end [%s]------\n", title))
+		tb_insert( str, str_format("\n=== end [%s]--\n", title))
 
 		title = tb_concat(str, "")
 		title = str_format(_fmtColor,rgb,title)
 	end
 
 	title = _appendHeap(title);
-	print(title)
+	if type(_pfunc) == "function" then
+		_pfunc(title)
+	else
+		print(title)
+	end
 end
 
 function readonly( tb )
@@ -134,6 +143,11 @@ function readonly( tb )
 	}
 	setmetatable(_ret,_mt);
 	return _ret;
+end
+
+function extends( src,parent )
+	setmetatable(src,{__index = parent});
+	return src;
 end
 
 ------ 排序相关 -----
