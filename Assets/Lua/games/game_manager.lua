@@ -28,11 +28,6 @@ function M.Init()
 			_MG[v[1]] = _entity;
 		end
 	end
-	
-	-- 按键控制 发布真机包时 会移除
-	-- if GM_IsEditor then
-	--	require("manager.keycodecallback").Init()
-	-- end
 end
 
 return M;
