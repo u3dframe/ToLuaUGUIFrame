@@ -4,7 +4,7 @@
 /// 日期 : 2020-06-27 20:37
 /// 功能 : 所有Update
 /// </summary>
-public interface IUpdate {
-    bool IsOnUpdate(); // 是否可以调用 OnUpdate 函数
-    void OnUpdate(float dt);   
+public interface ILateUpdate {
+    bool IsOnLateUpdate(); // 是否可以调用 OnLateUpdate 函数
+    void OnLateUpdate();
 }
