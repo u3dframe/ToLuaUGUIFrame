@@ -16,6 +16,12 @@ namespace Core.Kernel
     public partial class Resources : ReadWriteHelper
     {
         static public readonly System.Type tpGobj = typeof(GameObject);
+        static public readonly System.Type tpTex2D = typeof(Texture2D);
+        static public readonly System.Type tpSprite = typeof(Sprite);
+        static public readonly System.Type tpFont = typeof(Font);
+        static public readonly System.Type tpShader = typeof(Shader);
+        static public readonly System.Type tpMat = typeof(Material);
+        static public readonly System.Type tpAdoClip = typeof(AudioClip);
 
         /// <summary>
         /// 路径转为以 Assets/ 开头的

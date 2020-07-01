@@ -11,7 +11,7 @@ using UnityEngine.EventSystems;
 public class UGUIEventListener : EventTrigger {
 	static public UGUIEventListener Get(GameObject gobj,bool isAdd){
 		UGUIEventListener _r = gobj.GetComponent<UGUIEventListener> ();
-		if (isAdd && _r == null) {
+		if (isAdd && UtilityHelper.IsNull(_r)) {
 			_r = gobj.AddComponent<UGUIEventListener> ();
 		}
 		return _r;

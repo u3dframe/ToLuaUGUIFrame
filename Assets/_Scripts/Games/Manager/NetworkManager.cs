@@ -8,10 +8,10 @@ public class NetworkManager : GobjLifeListener {
 	static NetworkManager _instance;
 	static public NetworkManager instance{
 		get{
-			if (_instance == null) {
+			if (IsNull(_instance)) {
 				GameObject _gobj = GameMgr.mgrGobj;
 				_instance = _gobj.GetComponent<NetworkManager>();
-				if (_instance == null)
+				if (IsNull(_instance))
 				{
 					_instance = _gobj.AddComponent<NetworkManager> ();
 				}

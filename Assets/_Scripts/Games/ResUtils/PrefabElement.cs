@@ -4,15 +4,15 @@ using System.Collections;
 using System.Collections.Generic;
 
 /// <summary>
-/// 类名 : 缓存需要操作的对象
+/// 类名 : Prefab 单元对象
 /// 作者 : Canyon / 龚阳辉
 /// 日期 : 2017-08-04 00:10
-/// 功能 : 脚本控制用
+/// 功能 : 缓存需要操作的对象
 /// </summary>
-public class PrefabElement : GobjLifeListener {
+public class PrefabElement : PrefabBasic {
 	static public new PrefabElement Get(GameObject gobj,bool isAdd){
 		PrefabElement _r = gobj.GetComponent<PrefabElement> ();
-		if (isAdd && _r == null) {
+		if (isAdd && IsNull(_r)) {
 			_r = gobj.AddComponent<PrefabElement> ();
 		}
 		return _r;
@@ -20,37 +20,6 @@ public class PrefabElement : GobjLifeListener {
 
 	static public new PrefabElement Get(GameObject gobj){
 		return Get(gobj,true);
-	}
-
-	// 自身对象
-	Transform _m_trsf;
-	
-	/// <summary>
-	/// 自身对象
-	/// </summary>
-	public Transform m_trsf
-	{
-		get{
-			if(_m_trsf == null){
-				_m_trsf = transform;
-			}
-			return _m_trsf;
-		}
-	}
-	
-	GameObject _m_gobj;
-	
-	/// <summary>
-	/// 自身对象
-	/// </summary>
-	public GameObject m_gobj
-	{
-		get{
-			if(_m_gobj == null){
-				_m_gobj = gameObject;
-			}
-			return _m_gobj;
-		}
 	}
 	
 	/// <summary>
@@ -109,7 +78,7 @@ public class PrefabElement : GobjLifeListener {
 	
 	void Init()
 	{
-		if(m_gobjs == null)
+		if(null == m_gobjs)
 			return;
 		
 		if(isInit)
@@ -213,10 +182,7 @@ public class PrefabElement : GobjLifeListener {
 	public T GetComponent4Element<T>(string elName) where T : Component
 	{
 		GameObject gobj = GetGobjElement(elName);
-		
-		if(gobj == null){
-			return null;
-		}
+		if(IsNull(gobj)) return null;
 		return gobj.GetComponent<T>();
 	}
 	
@@ -226,10 +192,7 @@ public class PrefabElement : GobjLifeListener {
 	public Component GetComponent4Element(string elName,string comType)
 	{
 		GameObject gobj = GetGobjElement(elName);
-		
-		if(gobj == null){
-			return null;
-		}
+		if(IsNull(gobj)) return null;
 		return gobj.GetComponent(comType);
 	}
 	
@@ -239,10 +202,7 @@ public class PrefabElement : GobjLifeListener {
 	public Component GetComponent4Element(string elName,Type comType)
 	{
 		GameObject gobj = GetGobjElement(elName);
-		
-		if(gobj == null){
-			return null;
-		}
+		if(IsNull(gobj)) return null;
 		return gobj.GetComponent(comType);
 	}
 	
@@ -273,11 +233,9 @@ public class PrefabElement : GobjLifeListener {
 		for (int i=0;i<m_gobjs.Length;++i)
 		{
 			gobj = m_gobjs [i];
-			if (gobj != null)
-			{
-				if (!list.Contains (gobj)) {
-					list.Add (gobj);
-				}
+			if(IsNull(gobj)) continue;
+			if (!list.Contains (gobj)) {
+				list.Add (gobj);
 			}
 		}
 		m_gobjs = list.ToArray ();
@@ -286,7 +244,7 @@ public class PrefabElement : GobjLifeListener {
 
 	[ContextMenu("Re-Pars this and childs")]
 	void ReSizeListAll(){
-		PrefabElement[] arrs = this.gameObject.GetComponentsInChildren<PrefabElement> (true);
+		PrefabElement[] arrs = this.m_gobj.GetComponentsInChildren<PrefabElement> (true);
 		foreach (var item in arrs) {
 			item.ReSizeList ();
 		}

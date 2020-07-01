@@ -10,9 +10,14 @@ public delegate void OnNotifyDestry(GobjLifeListener obj);
 /// 功能 : 只针对 OnDestroy的回调
 /// </summary>
 public class GobjLifeListener : MonoBehaviour,IUpdate {
+	static public bool IsNull(UnityEngine.Object uobj)
+	{
+		return UtilityHelper.IsNull(uobj);
+	}
+
 	static public GobjLifeListener Get(GameObject gobj,bool isAdd){
 		GobjLifeListener _r = gobj.GetComponent<GobjLifeListener> ();
-		if (isAdd && _r == null) {
+		if (isAdd && IsNull(_r)) {
 			_r = gobj.AddComponent<GobjLifeListener> ();
 		}
 		return _r;
@@ -41,6 +46,10 @@ public class GobjLifeListener : MonoBehaviour,IUpdate {
 	/// </summary>
 	public OnNotifyDestry m_onDestroy;
 	
+	// 是否是存活的
+	private bool _alive = true;
+	public bool alive { get {return _alive;} }
+
 	void _ExcDestoryCall(){
 		var _call = this.m_onDestroy;
 		this.m_onDestroy = null;
@@ -51,9 +60,15 @@ public class GobjLifeListener : MonoBehaviour,IUpdate {
 	void OnDestroy(){
 		// Debug.Log ("Destroy,poolName = " + poolName+",gobjname = " + gameObject.name);
 		this.m_isOnUpdate = false;
-		if(!this.m_isCallDestroy) return;
+		this._alive = false;
 		OnCall4Destroy();
+		if(!this.m_isCallDestroy) return;
 		_ExcDestoryCall();
+	}
+
+	void OnApplicationQuit(){
+		this.m_isOnUpdate = false;
+		this._alive = false;
 	}
 
 	public void DetroySelf(bool isCallDestroy){
