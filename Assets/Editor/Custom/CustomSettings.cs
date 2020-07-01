@@ -184,11 +184,13 @@ public static class CustomSettings
         _GT(typeof(TNet.ByteBuffer)),
         
         _GT(typeof(GobjLifeListener)),
+        _GT(typeof(PrefabBasic)),
         _GT(typeof(GameMgr)),
         _GT(typeof(NetworkManager)),
         _GT(typeof(WWWMgr)),
         _GT(typeof(GameLanguage)),
 
+        _GT(typeof(UtilityHelper)),
         _GT(typeof(LuaHelper)),
         _GT(typeof(UGUICanvasAdaptive)),
         _GT(typeof(UGUIEventListener)),
