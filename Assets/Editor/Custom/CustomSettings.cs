@@ -202,6 +202,7 @@ public static class CustomSettings
         _GT(typeof(AssetInfo)),
         _GT(typeof(ABInfo)),
         _GT(typeof(AssetBundleManager)),
+        _GT(typeof(ResourceManager)),
         //---------------------------------------------------------------        
     };
 
