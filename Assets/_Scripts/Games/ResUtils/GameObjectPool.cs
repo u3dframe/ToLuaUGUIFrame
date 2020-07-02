@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 namespace Core{
+	public delegate void DF_LoadedFab(GameObject gobj);
+
 	/// <summary>
 	/// 类名 : GameObject 对象池
 	/// 作者 : Canyon / 龚阳辉
@@ -45,19 +47,28 @@ namespace Core{
 		public bool isAutoHandler4MoreThanMax = true;
 		private bool preIsAutoHandler = true;
 
-		public GameObjectPool (string poolName, int initCount, int maxSize,Transform root)
+		public DF_LoadedFab m_cfLoadedFab = null;
+
+		private GameObjectPool (string poolName, int initCount, int maxSize,Transform root)
 		{
 			Init(poolName,initCount,maxSize,root);
 		}
 		
-		public GameObjectPool (string poolName, int initCount,Transform root) : this(poolName,initCount,30,root)
+		static public GameObjectPool builder(string poolName, int initCount, int maxSize,Transform root)
 		{
+			return new GameObjectPool(poolName,initCount,maxSize,root);
 		}
-		
-		public GameObjectPool (string poolName,Transform root) : this(poolName,1,root)
+
+		static public GameObjectPool builder(string poolName, int initCount,Transform root)
 		{
+			return builder(poolName,initCount,30,root);
 		}
-		
+
+		static public GameObjectPool builder(string poolName,Transform root)
+		{
+			return builder(poolName,1,root);
+		}
+
 		public override string ToString ()
 		{
 			return string.Format (
@@ -103,15 +114,20 @@ namespace Core{
 			{
 				InitPool();
 			}
+			var func = m_cfLoadedFab;
+			this.m_cfLoadedFab = null;
+			if(func != null){
+				func(BorrowObject());
+			}
 		}
 
 		// 初始化对象
 		void InitPool(){
 			if (isAutoHandler4MoreThanMax) {
-				initSize = Mathf.Min (this.maxSize, this.initSize);
+				this.initSize = Mathf.Min (this.maxSize, this.initSize);
 			}
 
-			if (isHasPrefab && this.poolSize < initSize) {
+			if (isHasPrefab && this.poolSize < this.initSize) {
 				int index = this.poolSize;
 				for (; index < initSize; index++) {
 					AddObjectToPool (NewObjectInstance ());

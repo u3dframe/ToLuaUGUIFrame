@@ -53,25 +53,26 @@ static public class Localization
 		if (string.IsNullOrEmpty(val)) return false;
 		string[] _rows = GameFile.SplitRow(val);
 		if (GameFile.IsNullOrEmpty(_rows)) return false;
+		mCTemp = mDicLgs[language];
+		if(mCTemp == null)
+			mCTemp = new Dictionary<string, string>();
+		mCTemp.Clear();
+		
 		int lens = _rows.Length;
 		char[] spt = isCsv ? GameFile.m_cSpComma : GameFile.m_cSpEqual;
 		string[] _cols;
-		mCTemp = mDicLgs[val];
-		if(mCTemp == null)
-			mCTemp = new Dictionary<string, string>();
-		
-		mCTemp.Clear();
-		
+		string _k,_v;
 		for(int i = 0; i < lens; i++){
 			_cols = GameFile.Split(_rows[i],spt,true);
 			if(_cols == null || _cols.Length <= 1)
 				continue;
-			
+			_k = _cols[0];
+			_v = _cols[1].Replace("\\n","\n");
 			// 判断下
-			if(mCTemp.ContainsKey(_cols[0]))
-				Debug.LogErrorFormat("==== has same key = [{0}],val = [{1}] ",_cols[0],_cols[1]);
+			if(mCTemp.ContainsKey(_k))
+				Debug.LogErrorFormat("==== has same key = [{0}],val = [{1}] ",_k,_v);
 			else
-				mCTemp.Add(_cols[0], _cols[1]);
+				mCTemp.Add(_k, _v);
 		}
 		lens = mCTemp.Count;
 		if(lens > 0)

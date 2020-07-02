@@ -28,6 +28,7 @@ public class UGUILocalize : MonoBehaviour {
 	public string m_key = "";
 	public Text m_text;
 	bool m_isInit = false;
+	object[] fmtPars = null;
 
 	void Awake()
 	{
@@ -63,8 +64,9 @@ public class UGUILocalize : MonoBehaviour {
 	{
 		if(!m_text)
 			return;
-		
-		string _val = Localization.Get(m_key);
+		string _val = "";
+		if(fmtPars == null || fmtPars.Length <= 0) _val = Localization.Get(m_key);
+		else _val = Localization.Format(m_key,fmtPars);
 		_val =  (_val == null) ? ((m_key == null) ? "" : m_key) : _val;
 		m_text.text = _val;
 	}
@@ -75,8 +77,7 @@ public class UGUILocalize : MonoBehaviour {
 	}
 
 	public void SetText(int key){
-		this.m_key = key.ToString();
-		OnLocalize();
+		SetText(key.ToString());
 	}
 
 	public void SetUText(string val){
@@ -84,5 +85,15 @@ public class UGUILocalize : MonoBehaviour {
 			return;
 		val =  (val == null) ? "" : val;
 		m_text.text = val;
+	}
+
+	public void Format(string key,object[] pars){
+		this.m_key = key;
+		this.fmtPars = pars;
+		OnLocalize();
+	}
+
+	public void Format(int key,object[] pars){
+		Format(key.ToString(),pars);
 	}
 }

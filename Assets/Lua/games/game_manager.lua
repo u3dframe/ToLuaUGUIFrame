@@ -2,18 +2,26 @@ fmt_s1_s2 = "%s%s"
 local str_format = string.format
 
 local M = {}
+local this = M;
 
 --游戏初始化主要接口
 function M.Init()
 	
 	require "games/defines/define_luafp"
 
-	local _MG,_entity,_fp = _G;
+	local _MG = _G;
 	for _,v in ipairs(_LuaFpNoKey) do
-		_entity = require(v)
+		require(v)
 	end
+	this.RequireByTab(_LuaFpBasic);
+	this.RequireByTab(_LuaFpMidle);
+	this.RequireByTab(_LuaFpEnd);
+end
 
-	for _,v in ipairs(_LuaFpKv) do
+
+function M.RequireByTab(lb)
+	local _MG,_entity,_fp = _G;
+	for _,v in ipairs(lb) do
 		_fp = "";
 		if v[3] then
 			_fp = _LuaPacakge[v[3]] or ""
