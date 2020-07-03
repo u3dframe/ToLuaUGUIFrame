@@ -11,6 +11,10 @@ namespace Core{
 	/// </summary>
 	internal class GameObjectPool
 	{
+		static bool IsNull(UnityEngine.Object uobj){
+			return GobjLifeListener.IsNull(uobj);
+		}
+
 		static char[] m_cSp = "@@".ToCharArray();
 		
 		// 池名 = abName@@assetName
@@ -159,7 +163,17 @@ namespace Core{
 		private GameObject NewObjectInstance ()
 		{
 			if (this.poolObject == null) return null;
-			return this.poolObject.NewGObjInstance();
+			GameObject gobj = this.poolObject.NewGObjInstance(poolRoot);
+			if(!IsNull(gobj)){
+				var cs = GobjLifeListener.Get(gobj,true);
+				cs.poolName = this.poolName;
+				cs.m_onDestroy += _OnCFGobjDestroy;
+			}
+			return gobj;
+		}
+
+		private void _OnCFGobjDestroy(GobjLifeListener goLife){
+			OnDestroy(goLife.poolName,goLife.m_gobj);
 		}
 
 		// 取得一个对象
@@ -175,11 +189,11 @@ namespace Core{
 					}
 				}
 
-				if (go == null) {
+				if (IsNull(go)) {
 					go = NewObjectInstance ();
 				}
 
-				if (go != null) {
+				if (!IsNull(go)) {
 					borrowNum++;
 					go.SetActive (isActive);
 				}
@@ -230,9 +244,14 @@ namespace Core{
 				int curSize = this.poolSize;
 				if (curSize > this.maxSize) {
 					GameObject go = null;
+					GobjLifeListener _life = null;
 					for (int i = this.maxSize; i < curSize; i++) {
 						go = availableObjStack.Pop ();
 						if (go) {
+							_life = GobjLifeListener.Get(go);
+							if(_life != null){
+								_life.m_onDestroy -= _OnCFGobjDestroy;
+							}
 							GameObject.Destroy (go);
 						}
 					}

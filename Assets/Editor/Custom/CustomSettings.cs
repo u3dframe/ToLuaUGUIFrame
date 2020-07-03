@@ -199,9 +199,9 @@ public static class CustomSettings
         _GT(typeof(Localization)),
         _GT(typeof(UGUILocalize)),
         _GT(typeof(AssetBase)),
-        _GT(typeof(AssetInfo)),
+        // _GT(typeof(AssetInfo)),
         _GT(typeof(ABInfo)),
-        _GT(typeof(AssetBundleManager)),
+        // _GT(typeof(AssetBundleManager)),
         _GT(typeof(ResourceManager)),
         //---------------------------------------------------------------        
     };

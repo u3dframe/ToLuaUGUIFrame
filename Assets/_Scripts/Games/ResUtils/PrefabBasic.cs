@@ -21,35 +21,4 @@ public class PrefabBasic : GobjLifeListener {
 	static public new PrefabBasic Get(GameObject gobj){
 		return Get(gobj,true);
 	}
-
-	// 自身对象
-	Transform _m_trsf;
-	
-	/// <summary>
-	/// 自身对象
-	/// </summary>
-	public Transform m_trsf
-	{
-		get{
-			if(IsNull(_m_trsf)){
-				_m_trsf = transform;
-			}
-			return _m_trsf;
-		}
-	}
-	
-	GameObject _m_gobj;
-	
-	/// <summary>
-	/// 自身对象
-	/// </summary>
-	public GameObject m_gobj
-	{
-		get{
-			if(IsNull(_m_gobj)){
-				_m_gobj = gameObject;
-			}
-			return _m_gobj;
-		}
-	}
 }

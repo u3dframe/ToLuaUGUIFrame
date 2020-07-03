@@ -31,12 +31,41 @@ public class GobjLifeListener : MonoBehaviour,IUpdate {
 	[System.NonSerialized]
 	public bool m_isOnUpdate = true;
 	public bool IsOnUpdate(){ return this.m_isOnUpdate;} 
-	public virtual void OnUpdate(float dt) {}
+	public virtual void OnUpdate(float dt) {}	
+
+	// 自身对象
+	Transform _m_trsf;
 	
-	[System.NonSerialized]
+	/// <summary>
+	/// 自身对象
+	/// </summary>
+	public Transform m_trsf
+	{
+		get{
+			if(IsNull(_m_trsf)){
+				_m_trsf = transform;
+			}
+			return _m_trsf;
+		}
+	}
+	
+	GameObject _m_gobj;
+	
+	/// <summary>
+	/// 自身对象
+	/// </summary>
+	public GameObject m_gobj
+	{
+		get{
+			if(IsNull(_m_gobj)){
+				_m_gobj = gameObject;
+			}
+			return _m_gobj;
+		}
+	}
+
 	public string poolName = "";
 	
-	bool m_isCallDestroy = true;
 	/// <summary>
 	/// 继承对象实现的销毁回调 (比代理事件快)
 	/// </summary>
@@ -62,7 +91,6 @@ public class GobjLifeListener : MonoBehaviour,IUpdate {
 		this.m_isOnUpdate = false;
 		this._alive = false;
 		OnCall4Destroy();
-		if(!this.m_isCallDestroy) return;
 		_ExcDestoryCall();
 	}
 
@@ -71,12 +99,7 @@ public class GobjLifeListener : MonoBehaviour,IUpdate {
 		this._alive = false;
 	}
 
-	public void DetroySelf(bool isCallDestroy){
-		this.m_isCallDestroy = isCallDestroy;
-		GameObject.Destroy(this);
-	}
-
 	public void DetroySelf(){
-		DetroySelf(true);
+		GameObject.Destroy(this);
 	}
 }
