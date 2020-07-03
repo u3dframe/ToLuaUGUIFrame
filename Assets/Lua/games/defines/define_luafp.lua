@@ -37,7 +37,7 @@ _LuaFpMidle = {
 	{"","games/game_tools"}, -- 游戏需要的公共函数的封装
 	{"MgrRes","mgr_res",5}, -- 控制 资源加载了
 	{"LuaAsset","lua_asset",5}, -- 资源
-	{"LuaFab","lua_fab",5}, -- 资源
+	{"LuaFab","lua_fab",5}, -- 为场景对象和ui_base对象的父类
 }
 
 -- 最后

@@ -28,11 +28,11 @@ function M:_clean()
 	end
 end
 
-function M:preClean()
+function M:pre_clean()
 end
 
 function M:clean()
-	self:preClean()
+	self:pre_clean()
 	self:_clean()
 end
 
