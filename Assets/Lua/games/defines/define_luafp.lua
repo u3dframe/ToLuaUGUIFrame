@@ -35,7 +35,9 @@ _LuaFpMidle = {
 	{"","protocal",4}, -- 常量 网络层协议
 	{"Network","network",4}, -- 网络层
 	{"","games/game_tools"}, -- 游戏需要的公共函数的封装
-	{"LuaAsset","lua_asset",5}, -- 控制 资源加载了
+	{"MgrRes","mgr_res",5}, -- 控制 资源加载了
+	{"LuaAsset","lua_asset",5}, -- 资源
+	{"LuaFab","lua_fab",5}, -- 资源
 }
 
 -- 最后

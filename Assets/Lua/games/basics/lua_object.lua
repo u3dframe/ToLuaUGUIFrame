@@ -16,7 +16,7 @@ end
 function M:_clean()
 	local _tpv
 	for k, v in pairs(self) do
-		if k ~= "__index" and k ~= "__newindex" then
+		if k ~= "__cname" and k ~= "__supers" and k ~= "__create" and k ~= "__index" and k ~= "__newindex" then
 			_tpv = type(v)
 			if  _tpv ~= "function" then
 				if (_tpv == "table") and (v ~= self) and type(v.clean) == "function" then
@@ -28,8 +28,12 @@ function M:_clean()
 	end
 end
 
+function M:preClean()
+end
+
 function M:clean()
-	self:_clean();
+	self:preClean()
+	self:_clean()
 end
 
 return M
