@@ -11,14 +11,18 @@ namespace Core{
 	/// </summary>
 	internal class GameObjectPool
 	{
-		static bool IsNull(UnityEngine.Object uobj){
-			return GobjLifeListener.IsNull(uobj);
+		static bool IsNull(object uobj){
+			return UtilityHelper.IsNull(uobj);
 		}
+
+		static AssetBundleManager abMgr {get {return AssetBundleManager.instance;} }
 
 		static char[] m_cSp = "@@".ToCharArray();
 		
 		// 池名 = abName@@assetName
 		public string poolName {get; private set;}
+		protected string abName {get; private set;}
+		protected string assetName {get; private set;}
 		
 		// 内存对象
 		public AssetInfo poolObject;
@@ -43,7 +47,7 @@ namespace Core{
 		int borrowNum = 0;
 
 		// 是否有fab对象
-		public bool isHasPrefab { get { if(this.poolObject != null) return this.poolObject.isHasObj; return false; } }
+		public bool isHasPrefab { get { if(!IsNull(this.poolObject)) return this.poolObject.isHasObj; return false; } }
 
 		/// <summary>
 		/// 超过了最大数量是否自动销毁
@@ -96,13 +100,15 @@ namespace Core{
 			this.poolRoot = root;
 			string[] _ars = GameFile.Split(poolName,m_cSp,true);
 			if(_ars != null && _ars.Length > 2){
-				this.poolObject = AssetBundleManager.instance.LoadGobj(_ars[0],_ars[1],OnLoadedCall);
+				this.abName = _ars[0];
+				this.assetName = _ars[1];
+				this.poolObject = abMgr.LoadGobj(this.abName,this.assetName,OnLoadedCall);
 			}
 		}
 		
 		// 设置最大数量
 		public void SetMaxSize(int max){
-			max = max <= 0 ? 20 : max;
+			max = max < 0 ? 20 : max;
 			if(this.maxSize != max){
 				bool isReduce = this.maxSize > max;
 				this.maxSize = max;
@@ -162,7 +168,7 @@ namespace Core{
 		// 创建
 		private GameObject NewObjectInstance ()
 		{
-			if (this.poolObject == null) return null;
+			if (IsNull(this.poolObject)) return null;
 			GameObject gobj = this.poolObject.NewGObjInstance(poolRoot);
 			if(!IsNull(gobj)){
 				var cs = GobjLifeListener.Get(gobj,true);
@@ -177,7 +183,7 @@ namespace Core{
 		}
 
 		// 取得一个对象
-		public GameObject BorrowObject (bool isActive = true)
+		public GameObject BorrowObject (bool isActive)
 		{
 			lock (availableObjStack) {
 				GameObject go = null;
@@ -201,6 +207,11 @@ namespace Core{
 			}
 		}
 		
+		public GameObject BorrowObject ()
+		{
+			return BorrowObject(true);
+		}
+
 		// 还原
 		public void ReturnObject (string pool, GameObject po)
 		{
@@ -212,7 +223,7 @@ namespace Core{
 		}
 
 		// 对象销毁时，移除对象池
-		public void OnDestroy(string pool,GameObject go){
+		void OnDestroy(string pool,GameObject go){
 			lock (availableObjStack) {
 				if (poolName.Equals (pool) && go != null) {
 					bool isHas = availableObjStack.Contains (go);
@@ -263,6 +274,20 @@ namespace Core{
 		
 		public void HandlerMoreThanMax(){
 			HandlerMoreThanMax(false);
+		}
+
+		public void Clear()
+		{
+			SetMaxSize(0);
+			abMgr.UnLoadAsset(this.abName);
+		}
+
+		public void SetAssetBundleUnload(bool isImmUnload,float sec){
+			var ab = abMgr.GetABInfo(this.abName);;
+			if(!IsNull(ab)){
+				ab.m_isImmUnload = isImmUnload;
+				ab.SetDefOut(sec);
+			}
 		}
 	}
 }

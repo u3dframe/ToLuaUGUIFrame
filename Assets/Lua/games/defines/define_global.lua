@@ -5,7 +5,7 @@
 TB_EMPTY = {}; -- 全局空的对象(用于返回)
 TB_NEW = {__call=function() return {}; end}; -- 用法: TB_NEW();
 
-LE_AsType{
+LE_AsType = {
     Fab = 1,
     Sprite = 2,
     Texture = 3

@@ -43,7 +43,7 @@ public class ListDict<T> {
     }
 
     public bool Add(string key,T it){
-        if(m_dic.ContainsKey(key)){
+        if(m_dic.ContainsKey(key) || it == null){
             return false;
         }
         m_dic.Add(key,it);
