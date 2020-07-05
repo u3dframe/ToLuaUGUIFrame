@@ -23,7 +23,7 @@ function printLog(tag, fmt, ...)
 		if CDebug then
 			DE_BUG = CDebug.useLog
 		else
-			DE_BUG = true
+			DE_BUG = GM_IsEditor == true
 		end
 	end
 	local _isErr,str = tag == "ERR";
