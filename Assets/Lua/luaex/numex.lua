@@ -25,10 +25,12 @@ math.round = math.round or function(val)
 end
 local math_round = math.round
 
-bit_band = bit.band; -- 一个或多个无符号整数 '与 &' 运算 得到值
-bit_bor = bit.bor; -- 一个或多个无符号整数 '或 |' 运算 得到值
-bit_shl = bit.shl; -- 两个无符号整数,第一个参数是被移位的数，第二个参数是向左移动的位数
-bit_shr = bit.shr; -- 两个无符号整数,第一个参数是被移位的数，第二个参数是向右移动的位数
+if bit then
+	bit_band = bit.band; -- 一个或多个无符号整数 '与 &' 运算 得到值
+	bit_bor = bit.bor; -- 一个或多个无符号整数 '或 |' 运算 得到值
+	bit_shl = bit.shl; -- 两个无符号整数,第一个参数是被移位的数，第二个参数是向左移动的位数
+	bit_shr = bit.shr; -- 两个无符号整数,第一个参数是被移位的数，第二个参数是向右移动的位数
+end
 
 function tonum(val,base,def)
 	base = base or 10;
@@ -134,11 +136,19 @@ function M.nextStr(nlen,isSeek )
 end
 
 function M.bitOr(n1,n2)
-	return bit_bor(n1,n2);
+	if bit_bor then
+		return bit_bor(n1,n2);
+	else
+		return n1 | n2;
+	end
 end
 
 function M.bitAnd(n1,n2)
-	return bit_band(n1,n2);
+	if bit_band then
+		return bit_band(n1,n2);
+	else
+		return n1 & n2
+	end
 end
 
 function M.isBitAnd(n1,n2)
@@ -148,12 +158,20 @@ end
 
 -- 左移
 function M.bitLeft(org,pos)
-	return bit_shl(org,pos);
+	if bit_shl then
+		return bit_shl(org,pos);
+	else
+		return org << pos;
+	end
 end
 
 -- 右移
 function M.bitRight(org,pos)
-	return bit_shr(org,pos);
+	if bit_shr then
+		return bit_shr(org,pos);
+	else
+		return org >> pos;
+	end
 end
 
 -- 求余数

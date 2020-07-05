@@ -10,7 +10,8 @@ local tb_insert = table.insert
 local tb_concat = table.concat
 local d_traceback = debug.traceback
 
-local DE_BUG = CDebug.useLog;
+local DE_BUG = nil;
+local _error = error;
 
 function logMust(fmt,...)
 	local str = str_format(tostring(fmt), ...)
@@ -18,8 +19,16 @@ function logMust(fmt,...)
 end
 
 function printLog(tag, fmt, ...)
+	if DE_BUG == nil then
+		if CDebug then
+			DE_BUG = CDebug.useLog
+		else
+			DE_BUG = true
+		end
+	end
 	local _isErr,str = tag == "ERR";
-	if (not _isErr) and (not DE_BUG) then
+	local _isThr = tag == "THR";
+	if (not _isErr) and (not _isThr) and (not DE_BUG) then
 		return
 	end
 
@@ -29,14 +38,20 @@ function printLog(tag, fmt, ...)
         "] ",
         str_format(tostring(fmt), ...)
 	}
-    if _isErr then
+    if _isErr or _isThr then
         tb_insert(t, d_traceback("", 3))  -- 打印要少前3行数据
 	end
 	str = tb_concat(t)
 	if _isErr then
 		CHelper.LogError(str)
+	elseif _isThr then
+		if _error then
+			_error(str)
+		else
+			CHelper.ThrowError(str);
+		end
 	else
-		CDebug.Log(str)
+		CHelper.Log(str)
 	end
 end
 
@@ -50,4 +65,8 @@ end
   
 function printWarn(fmt, ...)
 	printLog("WARN", fmt, ...)
+end
+
+function error(fmt,...)
+	printLog("THR", fmt, ...)
 end

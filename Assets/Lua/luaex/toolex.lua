@@ -22,6 +22,13 @@ local str_gsub = string.gsub
 local str_rep = string.rep
 local str_byte = string.byte
 
+local _unpack = unpack or table.unpack
+function unpack( arg )
+	if _unpack then
+		return _unpack(arg)
+	end
+end
+
 function handler( obj, method )
     return function( ... )
         return method( obj, ... )
